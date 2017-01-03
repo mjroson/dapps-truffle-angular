@@ -37,6 +37,9 @@
             console.log(accs);
             ctrl.account = ctrl.accounts[0];
 
+            console.log("CURRENT ACCOUNT");
+            console.log(ctrl.account);
+
             ctrl.refreshBalance();
         });
     }
@@ -45,8 +48,11 @@
     Controller.prototype.refreshBalance = function () {
         var meta = MetaCoin.deployed();
         var ctrl = this;
+        console.log("EXECUTE REFRESH BALANCE");
         meta.getBalance.call(this.account, {from: this.account})
             .then(function (value) {
+                console.log("VALUE REFRESH BALANCE");
+                console.log(value);
                 ctrl.$timeout(function () {
                     ctrl.balance = value.valueOf();
                 });
@@ -56,15 +62,19 @@
         });
     };
 
-    Controller.prototype.sendCoin = function () {
+    Controller.prototype.sendCoin = function (amount, receiver) {
         // Remove the 2 lines that pick amount and receiver from the DOM.
+        var ctrl = this;
         console.log('sending coin');
         var meta = MetaCoin.deployed();
         alert("Initiating transaction... (please wait)");
-        meta.sendCoin(this.receiver, parseInt(amount), {from: this.account}).then(
+        meta.sendCoin(receiver, parseInt(amount), {from: this.account}).then(
             function () {
                 alert("Transaction complete!");
-                this.refreshBalance();
+                
+                ctrl.$timeout(function () {
+                    ctrl.refreshBalance();
+                });
             }).catch(function (e) {
             console.log(e);
             alert("Error sending coin; see log.");

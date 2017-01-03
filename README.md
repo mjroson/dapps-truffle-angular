@@ -36,6 +36,9 @@ Paul @fire
 	** Install and run testrpc with testnet
 	*** sudo npm install -g ethereumjs-testrpc
 	*** testrpc --testnet
+
+	# Run geth with testnet and rpc
+		-geth --rpc --testnet --rpcaddr localhost --rpcapi "eth,net,web3,admin" console
 * [Bower](https://bower.io/)
 
 ## Build
